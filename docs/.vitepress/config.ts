@@ -1,40 +1,44 @@
-import path from "path";
+import {fileURLToPath, URL} from "node:url";
+import path from "node:path";
 import {defineConfig} from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "D3 by Observable",
   description: "The JavaScript library for bespoke data visualization",
-  base: "/d3/", // temporary
   cleanUrls: true,
+  head: [
+    ["link", {rel: "apple-touch-icon", href: "https://static.observableusercontent.com/files/082781eba5e2203c0c63ef9af5ace08ae0faaf8c3e2c251e77a4383f2fffd85ac236a4066f12e838dee5e2f3abb518c27db51b47b5e21a96d094a8f27f89fcd7"}],
+    ["link", {rel: "icon", type: "image/png", href: "https://static.observableusercontent.com/files/082781eba5e2203c0c63ef9af5ace08ae0faaf8c3e2c251e77a4383f2fffd85ac236a4066f12e838dee5e2f3abb518c27db51b47b5e21a96d094a8f27f89fcd7", sizes: "512x512"}]
+  ],
   vite: {
     resolve: {
-      alias: {
-        d3: path.resolve("./dist/d3.mjs")
-      }
+      alias: [
+        {find: "d3", replacement: path.resolve("./dist/d3.mjs")},
+        {find: /^.*\/VPFooter\.vue$/, replacement: fileURLToPath(new URL("./theme/CustomFooter.vue", import.meta.url))}
+      ]
     }
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: "/logo.svg",
+    siteTitle: "",
     nav: [
       {text: "Home", link: "/"},
-      {text: "Examples", link: "https://observablehq.com/@d3/gallery"},
+      {text: "Examples", link: "https://observablehq.com/@d3/gallery?utm_source=d3js-org&utm_medium=nav&utm_campaign=try-observable"},
       {text: "Community", link: "/community"},
-      {text: "Plot", link: "https://observablehq.com/plot"}
+      {text: "Plot", link: "https://observablehq.com/plot?utm_source=d3js-org&utm_medium=nav&utm_campaign=try-observable"}
     ],
     sidebar: [
       {
         text: "Introduction",
         items: [
           {text: "What is D3?", link: "/what-is-d3"},
-          {text: "Why D3?", link: "/why-d3"},
           {text: "Getting started", link: "/getting-started"},
         ]
       },
       {
         text: "Visualization",
-        collapsed: true,
         items: [
           {text: "d3-axis", link: "/d3-axis"},
           {
@@ -194,7 +198,6 @@ export default defineConfig({
       },
       {
         text: "Animation",
-        collapsed: true,
         items: [
           {text: "d3-ease", link: "/d3-ease"},
           {text: "d3-timer", link: "/d3-timer"},
@@ -213,7 +216,6 @@ export default defineConfig({
       },
       {
         text: "Interaction",
-        collapsed: true,
         items: [
           {text: "d3-brush", link: "/d3-brush"},
           {text: "d3-dispatch", link: "/d3-dispatch"},
@@ -223,7 +225,6 @@ export default defineConfig({
       },
       {
         text: "Data",
-        collapsed: true,
         items: [
           {
             text: "d3-array",
