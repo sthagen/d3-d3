@@ -4,6 +4,7 @@ import * as Plot from "@observablehq/plot";
 import * as d3 from "d3";
 import {useData} from "vitepress";
 import {computed} from "vue";
+import LogoDiagram from "./components/LogoDiagram.vue";
 import PlotRender from "./components/PlotRender.js";
 
 const {site: {value: {themeConfig: {sidebar}}}} = useData();
@@ -21,9 +22,18 @@ const paths = computed(() => {
   return paths;
 });
 
+// https://github.com/observablehq/plot/issues/1703
+function computeTreeWidth(paths) {
+  const root = d3.tree().nodeSize([1, 1])(d3.stratify().path((d) => d.path)(paths));
+  const [x1, x2] = d3.extent(root, (d) => d.x);
+  return x2 - x1;
+}
+
 </script>
 
 # What is D3?
+
+<LogoDiagram />
 
 **D3** (or **D3.js**) is a free, open-source JavaScript library for visualizing data. Its low-level approach built on web standards offers unparalleled flexibility in authoring dynamic, data-driven graphics. For more than a decade D3 has powered groundbreaking and award-winning visualizations, become a foundational building block of higher-level chart libraries, and fostered a vibrant community of data practitioners around the world.
 
@@ -52,7 +62,7 @@ What all’s in the D3 toolbox? We recommend exploring the documentation and exa
 
 <PlotRender :options='{
   axis: null,
-  height: 1000,
+  height: computeTreeWidth(paths) * 12,
   marginTop: 4,
   marginBottom: 4,
   marginRight: 120,
